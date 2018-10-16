@@ -1,0 +1,14 @@
+*.user
+*.suo
+*.cache
+*.ncrunchsolution
+*.dgml
+bin
+obj
+packages
+.vs
+*~
+TestResult.xml
+Settings.FSharpLint
+all.userprefs
+*.mdb
