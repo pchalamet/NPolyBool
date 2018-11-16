@@ -35,28 +35,32 @@ namespace PolyBool
             var By = right.Y;
             var Cx = pt.X;
             var Cy = pt.Y;
-            return (Bx - Ax) * (Cy - Ay) - (By - Ay) * (Cx - Ax) >= -eps;
+            var ABx = Bx - Ax;
+            var ABy = By - Ay;
+            var AB = Math.Sqrt(ABx * ABx + ABy * ABy);
+            // algebraic distance of 'pt' to ('left', 'right') line is:
+            // [ABx * (Cy - Ay) - ABy * (Cx - Ax)] / AB
+            return ABx * (Cy - Ay) - ABy * (Cx - Ax) >= -eps * AB;
         }
 
         public bool PointBetween(Point p, Point left, Point right)
         {
             // p must be collinear with left->right
             // returns false if p == left, p == right, or left == right
+            if (PointsSame(p, left) || PointsSame(p, right)) return false;
             double dPyLy = p.Y - left.Y;
             double dRxLx = right.X - left.X;
             double dPxLx = p.X - left.X;
             double dRyLy = right.Y - left.Y;
 
-            double dot = dPxLx * dRxLx + dPyLy * dRyLy;
+            var dot = dPxLx * dRxLx + dPyLy * dRyLy;
+            // dot < 0 is p is to the left of 'left'
+            if (dot < 0) return false;
 
-            if (dot < eps)
-                return false;
+            var sqlen = dRxLx * dRxLx + dRyLy * dRyLy;
 
-            double sqlen = dRxLx * dRxLx + dRyLy * dRyLy;
-            if (dot - sqlen > -eps)
-                return false;
-
-            return true;
+            // dot <= sqlen is p is to the left of 'right'
+            return dot <= sqlen;
         }
 
         private bool PointsSameX(Point p1, Point p2)
@@ -87,39 +91,61 @@ namespace PolyBool
             var dy1 = pt1.Y - pt2.Y;
             var dx2 = pt2.X - pt3.X;
             var dy2 = pt2.Y - pt3.Y;
-            return Math.Abs(dx1 * dy2 - dx2 * dy1) < eps;
+            var n1 = Math.Sqrt(dx1 * dx1 + dy1 * dy1);
+            var n2 = Math.Sqrt(dx2 * dx2 + dy2 * dy2);
+            // Assuming det(u, v) = 0, we have:
+            // |det(u + u_err, v + v_err)| = |det(u + u_err, v + v_err) - det(u,v)|
+            // =|det(u, v_err) + det(u_err. v) + det(u_err, v_err)|
+            // <= |det(u, v_err)| + |det(u_err, v)| + |det(u_err, v_err)|
+            // <= N(u)N(v_err) + N(u_err)N(v) + N(u_err)N(v_err)
+            // <= eps * (N(u) + N(v) + eps)
+            // We have N(u) ~ N(u + u_err) and N(v) ~ N(v + v_err).
+            // Assuming eps << N(u) and eps << N(v), we end with:
+            // |det(u + u_err, v + v_err)| <= eps * (N(u + u_err) + N(v + v_err))
+            return Math.Abs(dx1 * dy2 - dx2 * dy1) <= eps * (n1 + n2);
         }
 
         public IntersectionPoint LinesIntersect(Point a0, Point a1, Point b0, Point b1)
         {
-            double adx = a1.X - a0.X;
-            double ady = a1.Y - a0.Y;
-            double bdx = b1.X - b0.X;
-            double bdy = b1.Y - b0.Y;
+            var adx = a1.X - a0.X;
+            var ady = a1.Y - a0.Y;
+            var bdx = b1.X - b0.X;
+            var bdy = b1.Y - b0.Y;
 
-            double axb = adx * bdy - ady * bdx;
+            var axb = adx * bdy - ady * bdx;
+            var n1 = Math.Sqrt(adx * adx + ady * ady);
+            var n2 = Math.Sqrt(bdx * bdx + bdy * bdy);
+            if (Math.Abs(axb) <= eps * (n1 + n2))
+                return null; // lines are coincident
 
-            if (Math.Abs(axb) < eps)
-                return null;
+            var dx = a0.X - b0.X;
+            var dy = a0.Y - b0.Y;
 
-            double dx = a0.X - b0.X;
-            double dy = a0.Y - b0.Y;
+            var A = (bdx * dy - bdy * dx) / axb;
+            var B = (adx * dy - ady * dx) / axb;
 
-            double A = (bdx * dy - bdy * dx) / axb;
-            double B = (adx * dy - ady * dx) / axb;
-
-            int calcAlongUsingValue(double value)
-            {
-                if (value <= -eps) return -2;
-                else if (value < eps) return -1;
-                else if (value - 1.0 <= -eps) return 0;
-                else if (value - 1.0 < eps) return 1;
-                return 2;
-            }
-
-            var alongA = calcAlongUsingValue(A);
-            var alongB = calcAlongUsingValue(B);
             var pt = new Point(a0.X + A * adx, a0.Y + A * ady);
+
+            int alongA = 0;
+            if (PointsSame(pt, a0))
+                alongA = -1;
+            else if (PointsSame(pt, a1))
+                alongA = 1;
+            else if (A < 0)
+                alongA = -2;
+            else if (A > 1)
+                alongA = 2;
+
+            int alongB = 0;
+            if (PointsSame(pt, b0))
+                alongB = -1;
+            else if (PointsSame(pt, b1))
+                alongB = 1;
+            else if (B < 0)
+                alongB = -2;
+            else if (B > 1)
+                alongB = 2;
+
             return new IntersectionPoint(alongA, alongB, pt);
         }
     }

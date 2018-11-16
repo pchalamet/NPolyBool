@@ -6,10 +6,10 @@ namespace PolyBool
     {
         private static List<Segment> select(List<Segment> segments, int[] selection)
         {
-            List<Segment> result = new List<Segment>();
-            foreach (Segment seg in segments)
+            var result = new List<Segment>();
+            foreach (var seg in segments)
             {
-                int index = (seg.MyFill.Above == true ? 8 : 0)
+                var index = (seg.MyFill.Above == true ? 8 : 0)
                             + (seg.MyFill.Below == true ? 4 : 0)
                             + (seg.OtherFill?.Above == true ? 2 : 0)
                             + (seg.OtherFill?.Below == true ? 1 : 0);
@@ -34,6 +34,24 @@ namespace PolyBool
 
         public static List<Segment> Union(List<Segment> segments)
         {
+            //                                      primary | secondary
+            // above1 below1 above2 below2    Keep?               Value
+            //    0      0      0      0   =>   no                  0
+            //    0      0      0      1   =>   yes filled below    2
+            //    0      0      1      0   =>   yes filled above    1
+            //    0      0      1      1   =>   no                  0
+            //    0      1      0      0   =>   yes filled below    2
+            //    0      1      0      1   =>   yes filled below    2
+            //    0      1      1      0   =>   no                  0
+            //    0      1      1      1   =>   no                  0
+            //    1      0      0      0   =>   yes filled above    1
+            //    1      0      0      1   =>   no                  0
+            //    1      0      1      0   =>   yes filled above    1
+            //    1      0      1      1   =>   no                  0
+            //    1      1      0      0   =>   no                  0
+            //    1      1      0      1   =>   no                  0
+            //    1      1      1      0   =>   no                  0
+            //    1      1      1      1   =>   no                  0
             return select(segments,
                           new[] { 0, 2, 1, 0,
                                   2, 2, 0, 0,
@@ -43,6 +61,24 @@ namespace PolyBool
 
         public static List<Segment> Intersect(List<Segment> segments)
         {
+            //                                      primary & secondary
+            // above1 below1 above2 below2    Keep?               Value
+            //    0      0      0      0   =>   no                  0
+            //    0      0      0      1   =>   no                  0
+            //    0      0      1      0   =>   no                  0
+            //    0      0      1      1   =>   no                  0
+            //    0      1      0      0   =>   no                  0
+            //    0      1      0      1   =>   yes filled below    2
+            //    0      1      1      0   =>   no                  0
+            //    0      1      1      1   =>   yes filled below    2
+            //    1      0      0      0   =>   no                  0
+            //    1      0      0      1   =>   no                  0
+            //    1      0      1      0   =>   yes filled above    1
+            //    1      0      1      1   =>   yes filled above    1
+            //    1      1      0      0   =>   no                  0
+            //    1      1      0      1   =>   yes filled below    2
+            //    1      1      1      0   =>   yes filled above    1
+            //    1      1      1      1   =>   no                  0
             return select(segments,
                           new[] { 0, 0, 0, 0,
                                   0, 2, 0, 2,
@@ -52,6 +88,24 @@ namespace PolyBool
 
         public static List<Segment> Difference(List<Segment> segments)
         {
+            //                                      primary - secondary
+            // above1 below1 above2 below2    Keep?               Value
+            //    0      0      0      0   =>   no                  0
+            //    0      0      0      1   =>   no                  0
+            //    0      0      1      0   =>   no                  0
+            //    0      0      1      1   =>   no                  0
+            //    0      1      0      0   =>   yes filled below    2
+            //    0      1      0      1   =>   no                  0
+            //    0      1      1      0   =>   yes filled below    2
+            //    0      1      1      1   =>   no                  0
+            //    1      0      0      0   =>   yes filled above    1
+            //    1      0      0      1   =>   yes filled above    1
+            //    1      0      1      0   =>   no                  0
+            //    1      0      1      1   =>   no                  0
+            //    1      1      0      0   =>   no                  0
+            //    1      1      0      1   =>   yes filled above    1
+            //    1      1      1      0   =>   yes filled below    2
+            //    1      1      1      1   =>   no                  0
             return select(segments,
                           new[] { 0, 0, 0, 0,
                                   2, 0, 2, 0,
@@ -61,6 +115,24 @@ namespace PolyBool
 
         public static List<Segment> DifferenceRev(List<Segment> segments)
         {
+            //                                      secondary - primary
+            // above1 below1 above2 below2    Keep?               Value
+            //    0      0      0      0   =>   no                  0
+            //    0      0      0      1   =>   yes filled below    2
+            //    0      0      1      0   =>   yes filled above    1
+            //    0      0      1      1   =>   no                  0
+            //    0      1      0      0   =>   no                  0
+            //    0      1      0      1   =>   no                  0
+            //    0      1      1      0   =>   yes filled above    1
+            //    0      1      1      1   =>   yes filled above    1
+            //    1      0      0      0   =>   no                  0
+            //    1      0      0      1   =>   yes filled below    2
+            //    1      0      1      0   =>   no                  0
+            //    1      0      1      1   =>   yes filled below    2
+            //    1      1      0      0   =>   no                  0
+            //    1      1      0      1   =>   no                  0
+            //    1      1      1      0   =>   no                  0
+            //    1      1      1      1   =>   no                  0
             return select(segments,
                           new[] { 0, 2, 1, 0,
                                   0, 0, 1, 1,
@@ -70,6 +142,24 @@ namespace PolyBool
 
         public static List<Segment> Xor(List<Segment> segments)
         {
+            //                                      primary ^ secondary
+            // above1 below1 above2 below2    Keep?               Value
+            //    0      0      0      0   =>   no                  0
+            //    0      0      0      1   =>   yes filled below    2
+            //    0      0      1      0   =>   yes filled above    1
+            //    0      0      1      1   =>   no                  0
+            //    0      1      0      0   =>   yes filled below    2
+            //    0      1      0      1   =>   no                  0
+            //    0      1      1      0   =>   no                  0
+            //    0      1      1      1   =>   yes filled above    1
+            //    1      0      0      0   =>   yes filled above    1
+            //    1      0      0      1   =>   no                  0
+            //    1      0      1      0   =>   no                  0
+            //    1      0      1      1   =>   yes filled below    2
+            //    1      1      0      0   =>   no                  0
+            //    1      1      0      1   =>   yes filled above    1
+            //    1      1      1      0   =>   yes filled below    2
+            //    1      1      1      1   =>   no                  0
             return select(segments,
                           new[] { 0, 2, 1, 0,
                                   2, 0, 0, 1,

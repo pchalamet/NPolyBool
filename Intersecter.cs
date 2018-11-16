@@ -48,7 +48,7 @@ namespace PolyBool
         private int eventCompare(bool p1IsStart, Point p11, Point p12, bool p2IsStart, Point p21, Point p22)
         {
             // compare the selected points first
-            int comp = eps.PointsCompare(p11, p21);
+            var comp = eps.PointsCompare(p11, p21);
             if (comp != 0)
                 return comp;
             // the selected points are the same
@@ -70,7 +70,7 @@ namespace PolyBool
             bool check(Node here)
             {
                 // should ev be inserted before here?
-                int comp = eventCompare(
+                var comp = eventCompare(
                     ev.IsStart, ev.Pt, otherPt,
                     here.IsStart, here.Pt, here.Other.Pt
                 );
@@ -88,7 +88,7 @@ namespace PolyBool
                                      Primary = primary,
                                      Other = null,
                                      Status = null };
-            Node evStart = LinkedList.Node(newNode);
+            var evStart = LinkedList.Node(newNode);
             eventAdd(evStart, seg.End);
             return evStart;
         }
@@ -101,14 +101,14 @@ namespace PolyBool
                                      Primary = primary,
                                      Other = evStart,
                                      Status = null };
-            Node evEnd = LinkedList.Node(newNode);
+            var evEnd = LinkedList.Node(newNode);
             evStart.Other = evEnd;
             eventAdd(evEnd, evStart.Pt);
         }
 
         private void eventAddSegment(Segment seg, bool primary)
         {
-            Node evStart = eventAddSegmentStart(seg, primary);
+            var evStart = eventAddSegmentStart(seg, primary);
             eventAddSegmentEnd(evStart, seg, primary);
         }
 
@@ -139,7 +139,7 @@ namespace PolyBool
             // status logic
             //
 
-            LinkedList statusRoot = new LinkedList();
+            var statusRoot = new LinkedList();
 
             int statusCompare(Node ev1, Node ev2)
             {
@@ -283,7 +283,7 @@ namespace PolyBool
             //
             // main event loop
             //
-            List<Segment> segments = new List<Segment>();
+            var segments = new List<Segment>();
             while (!eventRoot.IsEmpty())
             {
                 var ev = eventRoot.GetHead();
