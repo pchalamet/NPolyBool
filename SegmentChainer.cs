@@ -25,12 +25,18 @@ namespace PolyBool
                     continue;
 
                 // search for two chains that this segment matches
-                var firstMatch = new Matcher { Index = 0,
-                                               MatchesHead = false,
-                                               MatchesPt1 = false };
-                var secondMatch = new Matcher { Index = 0,
-                                                MatchesHead = false,
-                                                MatchesPt1 = false };
+                var firstMatch = new Matcher
+                {
+                    Index = 0,
+                    MatchesHead = false,
+                    MatchesPt1 = false
+                };
+                var secondMatch = new Matcher
+                {
+                    Index = 0,
+                    MatchesHead = false,
+                    MatchesPt1 = false
+                };
                 var nextMatch = firstMatch;
 
                 bool setMatch(int index, bool matchesHead, bool matchesPt1)
@@ -53,19 +59,23 @@ namespace PolyBool
                     var chain = chains[i];
                     var head = chain[0];
                     var tail = chain[chain.Count - 1];
-                    if (eps.PointsSame(head, pt1)) {
+                    if (eps.PointsSame(head, pt1))
+                    {
                         if (setMatch(i, true, true))
                             break;
                     }
-                    else if (eps.PointsSame(head, pt2)) {
+                    else if (eps.PointsSame(head, pt2))
+                    {
                         if (setMatch(i, true, false))
                             break;
                     }
-                    else if (eps.PointsSame(tail, pt1)) {
+                    else if (eps.PointsSame(tail, pt1))
+                    {
                         if (setMatch(i, false, true))
                             break;
                     }
-                    else if (eps.PointsSame(tail, pt2)) {
+                    else if (eps.PointsSame(tail, pt2))
+                    {
                         if (setMatch(i, false, false))
                             break;
                     }

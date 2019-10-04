@@ -82,12 +82,15 @@ namespace PolyBool
 
         private Node eventAddSegmentStart(Segment seg, bool primary)
         {
-            var newNode = new Node { IsStart = true,
-                                     Pt = seg.Start,
-                                     Seg = seg,
-                                     Primary = primary,
-                                     Other = null,
-                                     Status = null };
+            var newNode = new Node
+            {
+                IsStart = true,
+                Pt = seg.Start,
+                Seg = seg,
+                Primary = primary,
+                Other = null,
+                Status = null
+            };
             var evStart = LinkedList.Node(newNode);
             eventAdd(evStart, seg.End);
             return evStart;
@@ -95,12 +98,15 @@ namespace PolyBool
 
         private void eventAddSegmentEnd(Node evStart, Segment seg, bool primary)
         {
-            var newNode = new Node { IsStart = false,
-                                     Pt = seg.End,
-                                     Seg = seg,
-                                     Primary = primary,
-                                     Other = evStart,
-                                     Status = null };
+            var newNode = new Node
+            {
+                IsStart = false,
+                Pt = seg.End,
+                Seg = seg,
+                Primary = primary,
+                Other = evStart,
+                Status = null
+            };
             var evEnd = LinkedList.Node(newNode);
             evStart.Other = evEnd;
             eventAdd(evEnd, evStart.Pt);
@@ -148,7 +154,8 @@ namespace PolyBool
                 var b1 = ev2.Seg.Start;
                 var b2 = ev2.Seg.End;
 
-                if (eps.PointsCollinear(a1, b1, b2)) {
+                if (eps.PointsCollinear(a1, b1, b2))
+                {
                     if (eps.PointsCollinear(a2, b1, b2))
                         return 1;
                     return eps.PointAboveOrOnLine(a2, b1, b2) ? 1 : -1;
@@ -406,8 +413,11 @@ namespace PolyBool
                                 else
                                     inside = below.Seg.MyFill.Above.Value;
                             }
-                            ev.Seg.OtherFill = new Fill() { Above = inside,
-                                                            Below = inside };
+                            ev.Seg.OtherFill = new Fill()
+                            {
+                                Above = inside,
+                                Below = inside
+                            };
                         }
                     }
 
@@ -479,6 +489,10 @@ namespace PolyBool
 
             public void AddRegion(Region region)
             {
+                // skip empty region
+                if (region.Points.Length == 0)
+                    return;
+
                 // regions are a list of points:
                 //  [ [0, 0], [100, 0], [50, 100] ]
                 // you can add multiple regions before running calculate
