@@ -12,3 +12,5 @@ TestResult.xml
 Settings.FSharpLint
 all.userprefs
 *.mdb
+out
+.ionide
