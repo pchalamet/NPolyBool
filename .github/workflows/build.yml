@@ -18,7 +18,7 @@ jobs:
           dotnet-version: 3.1.100
 
       - name: Build & Test
-        run: make test config=Release
+        run: make build config=Release
 
   publish:
     if: contains(github.ref, 'refs/tags/')

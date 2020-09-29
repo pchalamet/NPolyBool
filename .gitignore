@@ -14,3 +14,4 @@ all.userprefs
 *.mdb
 out
 .ionide
+.fake
