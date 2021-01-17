@@ -15,3 +15,4 @@ all.userprefs
 out
 .ionide
 .fake
+node_modules
