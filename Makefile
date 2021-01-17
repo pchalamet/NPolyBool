@@ -4,6 +4,9 @@ version ?= 0.0.0
 build:
 	dotnet build -c $(config) NPolyBool.sln
 
+test:
+	dotnet test -c $(config) NPolyBool.sln
+
 nuget:
 	dotnet pack -c $(config) /p:Version=$(version) -o $(PWD)/out NPolyBool.sln
 

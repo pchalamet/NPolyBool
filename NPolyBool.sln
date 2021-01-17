@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.28010.2046
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NPolyBool", "NPolyBool\NPolyBool.csproj", "{4CFCB8D9-B2E7-4ED5-BCAB-E50A4CA1CB3C}"
 EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "NPolyBool.Tests", "NPolyBool.Tests\NPolyBool.Tests.fsproj", "{195BCDBB-B6CD-41B5-9018-FB92AF921012}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{4CFCB8D9-B2E7-4ED5-BCAB-E50A4CA1CB3C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4CFCB8D9-B2E7-4ED5-BCAB-E50A4CA1CB3C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4CFCB8D9-B2E7-4ED5-BCAB-E50A4CA1CB3C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{195BCDBB-B6CD-41B5-9018-FB92AF921012}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{195BCDBB-B6CD-41B5-9018-FB92AF921012}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{195BCDBB-B6CD-41B5-9018-FB92AF921012}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{195BCDBB-B6CD-41B5-9018-FB92AF921012}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,0 +1,24 @@
+{
+  "name": "edge-js-quick-start",
+  "version": "1.0.0",
+  "description": "A minimal Edge.js application using `edge-js` with .NET Core",
+  "main": "main.js",
+  "scripts": {
+    "start": "node main.js core",
+    "start:core": "node main.js core",
+    "start:standard": "node main.js standard"
+  },
+  "repository": "https://github.com/agracio/edge-js-quick-start",
+  "keywords": [
+    "quick",
+    "start",
+    "tutorial",
+    "demo",
+    "Edge",
+    "Edge.js"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "edge-js": "^15.5.2"
+  }
+}
