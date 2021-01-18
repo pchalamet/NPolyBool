@@ -5,3 +5,9 @@ This is a port of [polybooljs](https://github.com/voidqk/polybooljs) for .net st
 Some code reused from [polybool.net](https://github.com/idormenco/PolyBool.Net). That was easier to port again instead of debugging PolyBool.Net.
 
 Expose same interface as polybooljs. All operations have been validated with side by side runs of polybooljs. WARNING: tests are not provided, just trust me ;-)
+
+# How to
+* Build: make build
+* Test (on Widows x64 only sorry): make test
+
+You can also use the sln directly with your favorite editor.
