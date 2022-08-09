@@ -11,3 +11,9 @@ Expose same interface as polybooljs. All operations have been validated with sid
 * Test (on Windows x64 only sorry): make test
 
 You can also use the sln directly with your favorite editor.
+
+# License
+Released under MIT (as original source):
+
+* Original source code Copyright (c) 2016 Sean Connelly(@voidqk, web: syntheti.cc)
+* Ported source code Copyright (c) 2018 - 2022 Pierre Chalamet
